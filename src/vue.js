@@ -11,6 +11,29 @@
 
   /*  */
 
+
+/*  
+
+ Object.defineProperty(obj,propertyName,{
+    writable:false,// 不可修改值
+    configurable:false,// 不可再次进行配置该属性，不可删除
+  })
+  https://developer.mozilla.org/zh-CN/docs/orphaned/Web/JavaScript/Reference/Global_Objects/Object/defineProperty
+
+  Object.preventExtensions(obj); // 不可添加属性
+  https://developer.mozilla.org/zh-CN/docs/orphaned/Web/JavaScript/Reference/Global_Objects/Object/preventExtensions
+
+  Object.seal()   Object.preventExtensions(obj) + configurable:false
+  Prevents the modification of attributes of existing properties, 
+  and prevents the addition of new properties. 
+  
+  Object.freeze()   Object.preventExtensions(obj) + configurable:false + writable:false
+  Prevents the modification of existing property attributes and values, 
+  and prevents the addition of new properties. 
+  
+  */
+
+
   var emptyObject = Object.freeze({});
 
   // These helpers produce better VM code in JS engines due to their
@@ -55,7 +78,24 @@
 
   /**
    * Get the raw type string of a value, e.g., [object Object].
+   * 
+   * 使用 toString() 检测对象类型可以通过 toString() 
+   * 来获取每个对象的类型。为了每个对象都能通过 Object.prototype.toString()来检测，
+   * 需要以 Function.prototype.call() 或者 Function.prototype.apply() 的形式来调用，
+   * 传递要检查的对象作为第一个参数，称为 thisArg
+   * 
+   * var toString = Object.prototype.toString;
+   * toString.call(new Date); // [object Date]
+   * toString.call(new String); // [object String]
+   * toString.call(Math); // [object Math]
+   * 
+   *   //Since JavaScript 1.8.5
+   * toString.call(undefined); // [object Undefined]
+   * toString.call(null); // [object Null]
+   * 
+   * https://developer.mozilla.org/zh-CN/docs/orphaned/Web/JavaScript/Reference/Global_Objects/Object/toString
    */
+  
   var _toString = Object.prototype.toString;
 
   function toRawType (value) {
